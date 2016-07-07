@@ -9,33 +9,34 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, AVSpeechSynthesizerDelegate, SettingsViewControllerDelegate {
     
     @IBOutlet weak var textView: UITextView!
 
-    let synth = AVSpeechSynthesizer()
+    let speechSynthesizer = AVSpeechSynthesizer()
     var myUtterance = AVSpeechUtterance(string: "")
     
-//    var rate: Float!
-//    
-//    var pitch: Float!
-//    
-//    var volume: Float!
+    var rate: Float! = 0.5
+    var pitch: Float! = 0.5
     
-//    func registerDefaultSettings() {
-//        rate = AVSpeechUtteranceDefaultSpeechRate
-//        pitch = 1.0
-//        volume = 1.0
-//        
-//        let defaultSpeechSettings: Dictionary<NSObject, AnyObject> = ["rate": rate, "pitch": pitch, "volume": volume]
-//        
-//        //NSUserDefaults.standardUserDefaults().registerDefaults(defaultSpeechSettings)
-//    }
+    //pitchMultiplier: The pitch multiplier acceptable values are between 0.5 and 2.0, where 1.0 is the default value.
+    func registerDefaultSettings() {
+        rate = AVSpeechUtteranceDefaultSpeechRate
+        pitch = 1.0
+        
+        let defaultSpeechSettings: Dictionary<String, AnyObject> = ["rate": rate, "pitch": pitch]
+        
+        NSUserDefaults.standardUserDefaults().registerDefaults(defaultSpeechSettings)
+    }
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+//        if !loadSettings() {
+//            registerDefaultSettings()
+//        }
         
     }
     
@@ -45,13 +46,54 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func textToSpeech(sender: AnyObject) {
-        
-        myUtterance = AVSpeechUtterance(string: textView.text)
-        myUtterance.rate = 0.5
-        myUtterance.pitchMultiplier = 0.25
-        synth.speakUtterance(myUtterance)
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "voiceIDSegueSettings" {
+            let settingsViewController = segue.destinationViewController as! SettingsViewController
+            print("segue")
+            settingsViewController.delegate = self
+        }
     }
+
+    @IBAction func textToSpeech(sender: AnyObject) {
+        myUtterance = AVSpeechUtterance(string: textView.text)
+        myUtterance.rate = rate
+        myUtterance.pitchMultiplier = pitch
+        NSUserDefaults.standardUserDefaults().setObject("en-au", forKey: "languageCode")
+        speechSynthesizer.speakUtterance(myUtterance)
+        
+    }
+    
+    // MARK: SettingsViewControllerDelegate method implementation
+    func didSaveSettings() {
+        let settings = NSUserDefaults.standardUserDefaults() as NSUserDefaults!
+        
+        rate = settings.valueForKey("rate") as! Float
+        pitch = settings.valueForKey("pitch") as! Float
+    }
+
+    @IBAction func pressGirlVoiceButton(sender: AnyObject) {
+        print("switch to girl voice")
+        rate = 0.5
+        pitch = 1.6
+        NSUserDefaults.standardUserDefaults().setObject("en-us", forKey: "languageCode")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        print(rate, pitch)
+    }
+
+    
+    @IBAction func pressBoyVoiceButton(sender: AnyObject) {
+        print("switch to boy voice")
+        rate = 0.5
+        pitch = 0.6
+        NSUserDefaults.standardUserDefaults().setObject("en-gb", forKey: "languageCode")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        print(rate, pitch)
+    }
+    
+    
+    
+
 
 }
 
