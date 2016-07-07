@@ -18,8 +18,12 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate, SettingsVie
     
     var rate: Float! = 0.5
     var pitch: Float! = 0.5
+    var preferredVoiceLanguageCode: String!
+    //var arrVoiceLanguages: [Dictionary<String, String!>] = []
+    //var selectedVoiceLanguage = 0
     
-    //pitchMultiplier: The pitch multiplier acceptable values are between 0.5 and 2.0, where 1.0 is the default value.
+    
+    //pitch: The pitch multiplier acceptable values are between 0.5 and 2.0, where 1.0 is the default value.
     func registerDefaultSettings() {
         rate = AVSpeechUtteranceDefaultSpeechRate
         pitch = 1.0
@@ -29,15 +33,29 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate, SettingsVie
         NSUserDefaults.standardUserDefaults().registerDefaults(defaultSpeechSettings)
     }
     
+    func loadSettings() -> Bool {
+        let userDefaults = NSUserDefaults.standardUserDefaults() as NSUserDefaults
+        
+        if let theRate: Float = userDefaults.valueForKey("rate") as? Float {
+            rate = theRate
+            pitch = userDefaults.valueForKey("pitch") as! Float
+            
+            return true
+        }
+        
+        return false
+    }
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-//        if !loadSettings() {
-//            registerDefaultSettings()
-//        }
+        if !loadSettings() {
+            registerDefaultSettings()
+        }
         
+        speechSynthesizer.delegate = self
     }
     
     override func didReceiveMemoryWarning()
@@ -48,7 +66,7 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate, SettingsVie
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "voiceIDSegueSettings" {
+        if segue.identifier == "voiceIDSegue" {
             let settingsViewController = segue.destinationViewController as! SettingsViewController
             print("segue")
             settingsViewController.delegate = self
@@ -70,6 +88,7 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate, SettingsVie
         
         rate = settings.valueForKey("rate") as! Float
         pitch = settings.valueForKey("pitch") as! Float
+        preferredVoiceLanguageCode = settings.objectForKey("languageCode") as! String
     }
 
     @IBAction func pressGirlVoiceButton(sender: AnyObject) {

@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Hello, This is Ciao speaking! Do you like my new voice?" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="kx9-H9-6LU">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Hello, This is Ciao speaking! Do you like my new voice!" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="kx9-H9-6LU">
                                 <rect key="frame" x="0.0" y="30" width="600" height="128"/>
                                 <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -72,7 +72,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="145" id="CHn-lp-dt2"/>
                                 </constraints>
-                                <inset key="contentEdgeInsets" minX="40" minY="0.0" maxX="40" maxY="0.0"/>
+                                <inset key="contentEdgeInsets" minX="40" minY="10" maxX="40" maxY="10"/>
                                 <state key="normal" image="Button.png"/>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -140,10 +140,10 @@
             </objects>
             <point key="canvasLocation" x="507" y="347"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings View Controller-->
         <scene sceneID="FZD-1f-F11">
             <objects>
-                <viewController id="cPQ-Gs-kyb" sceneMemberID="viewController">
+                <viewController id="cPQ-Gs-kyb" customClass="SettingsViewController" customModule="VoiceID" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DbA-7u-VPa"/>
                         <viewControllerLayoutGuide type="bottom" id="Lmz-YW-YYN"/>
@@ -155,17 +155,23 @@
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eDt-Ra-KVV">
                                 <rect key="frame" x="0.0" y="64" width="600" height="492"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Yi5-4H-fsL">
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="2" translatesAutoresizingMaskIntoConstraints="NO" id="Yi5-4H-fsL">
                                         <rect key="frame" x="118" y="59" width="154" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="150" id="47p-Jl-v65"/>
                                         </constraints>
+                                        <connections>
+                                            <action selector="pitchSliderValueChanged:" destination="cPQ-Gs-kyb" eventType="valueChanged" id="GOQ-Pw-QHC"/>
+                                        </connections>
                                     </slider>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="JbR-u6-tEP">
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="2" translatesAutoresizingMaskIntoConstraints="NO" id="JbR-u6-tEP">
                                         <rect key="frame" x="118" y="150" width="154" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="150" id="etx-70-ov5"/>
                                         </constraints>
+                                        <connections>
+                                            <action selector="rateSliderValueChanged:" destination="cPQ-Gs-kyb" eventType="valueChanged" id="NqH-Dm-eVm"/>
+                                        </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pitch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Edg-NQ-Eud">
                                         <rect key="frame" x="40" y="64" width="60" height="21"/>
@@ -186,6 +192,9 @@
                                             <constraint firstAttribute="height" constant="122" id="yss-yW-cs7"/>
                                         </constraints>
                                         <state key="normal" image="minions.png"/>
+                                        <connections>
+                                            <action selector="pressMinionButton:" destination="cPQ-Gs-kyb" eventType="touchUpInside" id="j2L-8p-bIY"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="myD-lh-hd5" userLabel="Robot">
                                         <rect key="frame" x="125" y="308" width="96" height="70"/>
@@ -194,6 +203,9 @@
                                             <constraint firstAttribute="width" constant="96" id="TnS-7E-VUJ"/>
                                         </constraints>
                                         <state key="normal" image="robot.png"/>
+                                        <connections>
+                                            <action selector="pressRobotButton:" destination="cPQ-Gs-kyb" eventType="touchUpInside" id="TVW-bT-26C"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hX6-ds-7os" userLabel="EvilVoice">
                                         <rect key="frame" x="200" y="311" width="118" height="64"/>
@@ -207,6 +219,9 @@
                                                 <exclude reference="XzR-o8-HNE"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <action selector="pressEvilVoiceButton:" destination="cPQ-Gs-kyb" eventType="touchUpInside" id="jsn-r2-MMh"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -267,8 +282,16 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="g6C-Xa-QNM">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="fv9-5R-5FR"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="fv9-5R-5FR">
+                            <connections>
+                                <action selector="saveSettings:" destination="cPQ-Gs-kyb" id="t0L-os-dDu"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="pitchSlider" destination="Yi5-4H-fsL" id="eSE-Z2-tJv"/>
+                        <outlet property="rateSlider" destination="JbR-u6-tEP" id="Ybv-h3-j0t"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7d8-eO-jr8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
