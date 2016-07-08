@@ -19,8 +19,8 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate, SettingsVie
     var rate: Float! = 0.5
     var pitch: Float! = 0.5
     var preferredVoiceLanguageCode: String!
-    //var arrVoiceLanguages: [Dictionary<String, String!>] = []
-    //var selectedVoiceLanguage = 0
+    var minionLanguage = "ba,ba,baba, na,na, nana, babanana? pa? banana! "
+    
     
     
     //pitch: The pitch multiplier acceptable values are between 0.5 and 2.0, where 1.0 is the default value.
@@ -55,6 +55,9 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate, SettingsVie
             registerDefaultSettings()
         }
         
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
+        view.addGestureRecognizer(tapGestureRecognizer)
+        
         speechSynthesizer.delegate = self
     }
     
@@ -64,6 +67,9 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate, SettingsVie
         // Dispose of any resources that can be recreated.
     }
     
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "voiceIDSegue" {
@@ -74,11 +80,26 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate, SettingsVie
     }
 
     @IBAction func textToSpeech(sender: AnyObject) {
-        myUtterance = AVSpeechUtterance(string: textView.text)
-        myUtterance.rate = rate
-        myUtterance.pitchMultiplier = pitch
-        NSUserDefaults.standardUserDefaults().setObject("en-au", forKey: "languageCode")
-        speechSynthesizer.speakUtterance(myUtterance)
+        let userDefaults = NSUserDefaults.standardUserDefaults() as NSUserDefaults
+        let languageCode = userDefaults.valueForKey("languageCode") as? String!
+        
+        if languageCode != "ko-KR" { //es-ES
+            myUtterance = AVSpeechUtterance(string: textView.text)
+            myUtterance.rate = rate
+            myUtterance.pitchMultiplier = pitch
+            myUtterance.volume = 0.8
+            NSUserDefaults.standardUserDefaults().setObject("en-au", forKey: "languageCode")
+            speechSynthesizer.speakUtterance(myUtterance)
+        } else {
+            print("minion language!")
+            myUtterance = AVSpeechUtterance(string: minionLanguage)
+            myUtterance.rate = 0.6
+            myUtterance.pitchMultiplier = 1.5
+            myUtterance.volume = 0.9
+            NSUserDefaults.standardUserDefaults().setObject("hi-IN", forKey: "languageCode")
+            speechSynthesizer.speakUtterance(myUtterance)
+        }
+        
         
     }
     
@@ -94,7 +115,7 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate, SettingsVie
     @IBAction func pressGirlVoiceButton(sender: AnyObject) {
         print("switch to girl voice")
         rate = 0.5
-        pitch = 1.6
+        pitch = 1.8
         NSUserDefaults.standardUserDefaults().setObject("en-us", forKey: "languageCode")
         NSUserDefaults.standardUserDefaults().synchronize()
         print(rate, pitch)

@@ -27,6 +27,7 @@ class SettingsViewController: UIViewController {
     var pitch: Float!
     var rate: Float!
     var preferredVoiceLanguageCode: String! = "en-gb"
+    //var minionLanguage = "Bello, Me want banana, Tulaliloo ti amo, Tank yu, Poopaye!"
     
     
     override func viewDidLoad() {
@@ -48,6 +49,7 @@ class SettingsViewController: UIViewController {
         NSUserDefaults.standardUserDefaults().setFloat(rate, forKey: "rate")
         NSUserDefaults.standardUserDefaults().setFloat(pitch, forKey: "pitch")
         NSUserDefaults.standardUserDefaults().setObject(preferredVoiceLanguageCode, forKey: "languageCode")
+        //NSUserDefaults.standardUserDefaults().setObject(minionLanguage, forKey: "minionLanguage")
         NSUserDefaults.standardUserDefaults().synchronize()
         
         self.delegate.didSaveSettings()
@@ -63,7 +65,7 @@ class SettingsViewController: UIViewController {
     
     
     @IBAction func rateSliderValueChanged(sender: AnyObject) {
-        let currentValue2 = Float(pitchSlider.value)
+        let currentValue2 = Float(rateSlider.value)
         print("Slider changing to \(currentValue2) ?")
         rate = currentValue2
     }
@@ -71,9 +73,9 @@ class SettingsViewController: UIViewController {
     
     @IBAction func pressMinionButton(sender: AnyObject) {
         print("Minion Button Pressed")
-        rate = 1.5
-        pitch = 2.0
-        preferredVoiceLanguageCode = "en-us"
+        rate = 0.6
+        pitch = 4.0
+        preferredVoiceLanguageCode = "ko-KR"
     }
     
     
@@ -87,7 +89,7 @@ class SettingsViewController: UIViewController {
     
     @IBAction func pressEvilVoiceButton(sender: AnyObject) {
         print("Evil Button Pressed")
-        rate = 0.4
+        rate = 0.2
         pitch = 0.1
     }
     
